@@ -75,8 +75,12 @@ describe('Quotes App', () => {
         it.only('can submit a quote', () => {
             // assert that some text doesn't exist on the page
 
+            // you must upgrade Cypress to 6.x.x for this to work!
+            // put "^6.0.0" in package.json
+            cy.intercept('/').as('baseUrl')
+            cy.wait('@baseUrl')
             // this will make Cypress wait until the element exists
-            cy.contains("Dr. Seuss").should('exist')
+
             // and now this will fail if we don't clean up after ourselves
             cy.contains(/Be excellent to each other/).should('not.exist');
             // type in both inputs
