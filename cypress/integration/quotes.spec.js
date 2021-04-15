@@ -7,9 +7,11 @@
 // tickets: bug, feature
 // add a test to go with your completed bug or feature
 
+// features without tests are technical debt
+
 describe('Quotes App', () => {
     beforeEach(() => {
-        cy.visit('http://localhost:1234')
+       cy.visit('http://localhost:1234')
     })
 
     it('sanity checks', () => {
@@ -70,10 +72,13 @@ describe('Quotes App', () => {
     })
 
     describe("adding a new quote and deleting it", () => {
-        it('can submit a quote', () => {
+        it.only('can submit a quote', () => {
             // assert that some text doesn't exist on the page
-            // is this a bug or what?
-            cy.contains("Be excellent to each other").should('not.exist')
+
+            // this will make Cypress wait until the element exists
+            cy.contains("Dr. Seuss").should('exist')
+            // and now this will fail if we don't clean up after ourselves
+            cy.contains(/Be excellent to each other/).should('not.exist');
             // type in both inputs
             textInput().type('Be excellent to each other', {delay: 100})
 
@@ -84,8 +89,10 @@ describe('Quotes App', () => {
             cy.contains(/Be excellent to each other/).should('exist')
 
             // delete the new element
+            // try commenting these lines out, the test will now fail
             const deleteButton = cy.contains("Be excellent to each other").next().next()
             deleteButton.click()
+
         })
     })
 
