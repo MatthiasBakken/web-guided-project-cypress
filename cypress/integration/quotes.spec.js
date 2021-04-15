@@ -1,6 +1,11 @@
 // write tests here
 
 // our testing suite
+// continuous integration - CI on GitHub. Travis
+
+// every two weeks, sprint meeting
+// tickets: bug, feature
+// add a test to go with your completed bug or feature
 
 describe('Quotes App', () => {
     beforeEach(() => {
@@ -54,7 +59,7 @@ describe('Quotes App', () => {
             submitButton().should('be.enabled')
         })
 
-        it("the cancel button can rest the inputs and disable the submit button", () => {
+        xit("the cancel button can rest the inputs and disable the submit button", () => {
             textInput().type("I like Chocolate Milk");
             authorInput().type("Cheez");
             cancelBtn().click();
@@ -62,6 +67,26 @@ describe('Quotes App', () => {
             authorInput().should("have.value", "");
             submitButton().should("be.disabled");
           });
+    })
+
+    describe("adding a new quote and deleting it", () => {
+        it('can submit a quote', () => {
+            // assert that some text doesn't exist on the page
+            // is this a bug or what?
+            cy.contains("Be excellent to each other").should('not.exist')
+            // type in both inputs
+            textInput().type('Be excellent to each other', {delay: 100})
+
+            authorInput().type('Bill and Ted')
+            // hit submit
+            submitButton().click()
+            // assert that the text now exists
+            cy.contains(/Be excellent to each other/).should('exist')
+
+            // delete the new element
+            const deleteButton = cy.contains("Be excellent to each other").next().next()
+            deleteButton.click()
+        })
     })
 
 })
